@@ -37,7 +37,6 @@ public class EmployeeController {
             return null;
         }
     }
-
     @GetMapping("/AllEmployees")
     public List<Employee> getAllEmployees(){
         return employeeService.getAllEmployees();
