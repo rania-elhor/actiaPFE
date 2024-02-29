@@ -5,12 +5,18 @@ import com.RHActia.actia_app.model.Gender;
 import com.RHActia.actia_app.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -24,12 +30,14 @@ public class EmployeeService {
         employeeRepository.findAll().forEach(e -> Employee.add(e));
         return Employee;
     }
-    public Employee addEmployee(Employee employee) {
+    public Employee addEmployee(Employee employee) throws IOException {
         if (employeeExists(employee.getEmail())) {
             throw new IllegalArgumentException("Employee already exists");
         }
+
         return employeeRepository.save(employee);
     }
+
 
     public boolean employeeExists(String email) {
         Employee existingEmployee = employeeRepository.findByEmail(email);
@@ -86,13 +94,17 @@ public class EmployeeService {
             existingEMP.setLastname(employee.getLastname());
             existingEMP.setEmail(employee.getEmail());
             existingEMP.setGender(employee.getGender());
-            existingEMP.setPhoto(employee.getPhoto());
+            existingEMP.setEmployeeImages(employee.getEmployeeImages());
             return employeeRepository.save(existingEMP);
         }
     }
 
-
-
+    public String uploadImage(MultipartFile file) throws IOException {
+        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        Path filePath = Paths.get(fileName);
+        Files.copy(file.getInputStream(), filePath);
+        return fileName; // Retourne uniquement le nom du fichier téléchargé
+    }
 
 
     public boolean deleteEmployeeByID(int id) {
