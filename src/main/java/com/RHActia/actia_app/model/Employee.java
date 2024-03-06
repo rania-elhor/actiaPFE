@@ -9,6 +9,7 @@ import java.util.Set;
 
 
 
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -41,16 +42,6 @@ public class Employee {
             }
     )
     private Set<ImageModel> employeeImages;
-
-
-
-    public Set<ImageModel> getEmployeeImages() {
-        return employeeImages;
-    }
-
-    public void setEmployeeImages(Set<ImageModel> employeeImages) {
-        this.employeeImages = employeeImages;
-    }
 
     public int getId() {
         return id;
@@ -90,5 +81,13 @@ public class Employee {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public Set<ImageModel> getEmployeeImages() {
+        return employeeImages;
+    }
+
+    public void setEmployeeImages(Set<ImageModel> employeeImages) {
+        this.employeeImages = employeeImages;
     }
 }
